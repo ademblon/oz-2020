@@ -52,11 +52,6 @@ local X in
    {Browse X}
 end
 
-declare A B C
-A = "Test"
-B = " 1"
-C = {Append A B}
-{Browse C}
 
 
 declare A B C
