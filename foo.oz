@@ -87,14 +87,40 @@ A = {New Dico init}
 {Browse C}
 
 declare A B C D
-{Dictionary.new A}
-D = "test"
-C = {String.toAtom D}
-{Dictionary.put A C 1}
-{Dictionary.get A C B}
+A = {NewDictionary}
+D = test
+%C = {String.toAtom D}
+{Dictionary.put A D 1}
+{Dictionary.get A D B}
 {Browse B}
 
+{Browse {Append (1|2|nil) (3|4|nil)}}
 
+declare A B C
+A = "AAA BBB CCC DDD"
+proc{Mot Y Str}
+   local Temp NewList in
+   Temp = {NewCell ""}
+   NewList = {NewCell nil} 
+   for Lettre in Str do
+      if Lettre == 32 then
+	 NewList := {Append @NewList ((@Temp)|nil)}
+	 Temp := ""
+      else
+	 Temp := {Append @Temp Lettre}
+      end
+   end
+   Y = @NewList
+   end
+end
+{Mot B A}
+{Browse B} 
+   
+
+   
+
+
+	  
       
       
    
