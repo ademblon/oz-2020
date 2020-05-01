@@ -128,6 +128,78 @@ proc{Mot Y Str}
 end
 {Mot B A}
 {Browse B} 
+
+
+declare A B C D E F G H I
+A = "truc much"|"ez"|nil
+B = "truc much"|"ez"|nil
+C = "truc much"|"tri"|nil
+D = "bla bla"|"bed"|nil
+E = "bla bla"|"zeg"|nil
+F = A|B|C|D|E|nil
+G = {Dictionary.new}
+proc{PutDict A Dicte}
+   local
+      Valu Dict1
+   in
+      case A
+      of Arg|Mot|nil then
+	 Dict1 = {Dictionary.condGet Dicte {String.toAtom Arg} {Dictionary.new}}
+	 Valu = {Dictionary.condGet Dict1 {String.toAtom Mot} 0}
+	 {Dictionary.put Dict1 {String.toAtom Mot} Valu+1}
+	 {Dictionary.put Dicte {String.toAtom Arg} Dict1}
+      else skip end
+   end
+end
+proc{IterListDict N Dic}
+   case N
+   of A|T then
+      {PutDict A Dic}
+      {IterListDict T Dic}
+   [] nil then skip
+   else skip end
+end
+
+fun{FindMax Dicte}
+   local A
+      fun{Itermax A Dicte B U}
+	 local C in
+	    case A of D|T then
+	       C = {Dictionary.get Dicte D}
+	       if C > U then {Itermax T Dicte D C}
+	       else {Itermax T Dicte B U} end
+	    [] nil then B end
+	 end
+      end
+   in
+      A = {Dictionary.keys Dicte}
+      {Itermax A Dicte {String.toAtom "init"} 0}
+   end
+end
+
+fun{FilterAll Dictu}
+   local B A
+      proc{Iterfilter A Dicte Dicts}
+	 local C in
+	    case A of D|T then
+	       C = {Dictionary.get Dicte D}
+	       {Dictionary.put Dicts D {FindMax C}}
+	       {Iterfilter T Dicte Dicts}
+	    []nil then skip end
+	 end
+      end
+   in
+      B = {Dictionary.keys Dictu}
+      {Browse B}
+      A = {Dictionary.new}
+      {Iterfilter B Dictu A}
+      A
+   end
+end
+{IterListDict F G}
+H = {FilterAll G}
+{Browse {Dictionary.keys H}}
+{Browse {Dictionary.get H {String.toAtom "truc much"}}}
    
 
    
