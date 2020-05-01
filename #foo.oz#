@@ -42,6 +42,7 @@ proc {FullAdd Input Output}
    case Input
    of A|B then ({Output add(A)} {FullAdd B Output})
    [] A|nil then {Output add(A)}
+   else skip
    end
 end
 thread {FullAdd E G} end
