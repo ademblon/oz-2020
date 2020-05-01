@@ -77,8 +77,11 @@ A = {New Dico init}
 {A add("test")}
 {A add("hello")}
 {A get("test" B)}
+{Browse 8}
+{Browse B}
 {A get("hello" C)}
 {Browse B}
+{Browse 9}
 {Browse C}
 
 declare A B C D

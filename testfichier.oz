@@ -64,10 +64,7 @@ fun{FilterAll Dictu}
       A
    end
 end
-{IterListDict F G}
-H = {FilterAll G}
-{Browse {Dictionary.keys H}}
-{Browse {Dictionary.get H {String.toAtom "truc much"}}}
+
 
 class Dico2
    attr i
@@ -102,20 +99,20 @@ class Dico2
    meth filterAll(A) 
       local
          B 
-	 proc{Iterfilter A Dicte Dicts}
+	 proc{Iterfilter A Dicta Dicts}
 	    local 
 	       C
 	       fun{FindMax Dicte}
 		  local 
 		     A
-		     fun{Itermax A Dicte B U}
+		     fun{Itermax A Dicty B U}
 		        local 
 			   C 
 			in
 			   case A of D|T then
-			      C = {Dictionary.get Dicte D}
-			      if C > U then {Itermax T Dicte D C}
-			      else {Itermax T Dicte B U} end
+			      C = {Dictionary.get Dicty D}
+			      if C > U then {Itermax T Dicty D C}
+			      else {Itermax T Dicty B U} end
 			   [] nil then B end
 			end
 		     end
@@ -126,9 +123,9 @@ class Dico2
 	       end
 	    in
 	       case A of D|T then
-	          C = {Dictionary.get Dicte D}
+	          C = {Dictionary.get Dicta D}
 		  {Dictionary.put Dicts D {FindMax C}}
-		  {Iterfilter T Dicte Dicts}
+		  {Iterfilter T Dicta Dicts}
 	       []nil then skip end
 	    end
 	 end
@@ -143,17 +140,14 @@ class Dico2
       {Dictionary.get @i {String.toAtom LI} X}
    end
    meth add1(LI B)
-      {Dictionary.put @i  LI B}
+      {Dictionary.put @i {String.toAtom LI} B}
    end
 end
-{Browse 2}
 G = {New Dico2 init}
-%{G iterListDict(F I)}
-%{G filterAll(H)}
-{G add1("trucmuch" 1)}
-{G get("trucmuch" Z)}
-{Browse Z}
-{Browse 3}
+{G iterListDict(F)}
+{G filterAll(H)}
+{Browse {Dictionary.get H {String.toAtom "truc much"}}}
+
 
 
 	    
