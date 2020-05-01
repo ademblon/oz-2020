@@ -29,7 +29,8 @@ define
     class TextFile % This class enables line-by-line reading
         from Open.file Open.text
     end
-	
-	
+
+    
+ 	
 
 end
