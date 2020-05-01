@@ -3,7 +3,7 @@ declare NThread A B C
 % @pre: - InFile: a TextFile from the file
 %- N: the desires Nth line
 %@post: Returns the N-the line or 'none' in case it doesn't exist
-NThread = 2
+NThread = 4
 A = "D:/Programmation/Projects/oz-2020/tweets/part_1.txt"
 proc {Scan2 InFile N}
    Line={InFile getS($)}
@@ -23,13 +23,28 @@ proc {GetAllLine NAME Num}
 end
 fun {CreateName Num}
    local A B in
-      A = {Append "tweets/part_" {Int.toString Num}}
+      A = {Append "D:/Programmation/Projects/oz-2020/tweets/part_" {Int.toString Num}}
       B = {Append A ".txt"}
       B
    end
 end
+proc{ReadAllFiles Num}
+   local Name in
+      Name = {CreateName Num}
+      try
+	 {GetAllLine Name 0}
+	 {ReadAllFiles Num+NThread}
+      catch X then skip
+      end
+   end
+end
+proc{StartThread}
+   for X in 1..NThread do
+      thread{ReadAllFiles X}end
+   end
+end
 %{Browse {GetFirstLine "tweets/part_1.txt"}}
-{GetAllLine A 0}
+{StartThread}
 %{ReadFile "tweets/part_1.txt" }
 
       
