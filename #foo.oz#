@@ -98,36 +98,27 @@ D = test
 
 declare A B C
 A = "AAA BBB CCC DDD "
-proc{Test Str}
-   local X in
+proc{Test Str Z}
+   local X Y in
       X = {NewCell ""}
+      Y = {NewCell nil}
       for Lettre in Str do
 	 {Browse Lettre}
+	 if Lettre == 32 then
+	    Y := {Append @Y (@X)|nil}
+	    X := ""
+	 else
+	    X := {Append @X Lettre|nil}
+	 end
       end
-      {Browse @X}
+      Z = @Y
    end
 end
-{Test A}
+{Test A B}
+{Browse B}
 
 
-proc{Mot Y Str}
-   local Temp NewList in
-   Temp = {NewCell ""}
-   NewList = {NewCell nil} 
-   for Lettre in Str do
-      if Lettre == 32 then
-	 NewList := {Append @NewList @Temp}
-	 Temp := ""
-      else
-	 Temp := {Append @Temp Lettre}
-      end
-   else skip
-   end
-   y = @NewList
-   end
-end
-{Mot B A}
-{Browse B} 
+
    
 
    
