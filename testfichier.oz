@@ -1,41 +1,159 @@
-functor
-import
-   Dict at x-oz://system/adt/Dictionary.ozf
-export
-   PutDict
-   IterListDict
-define
-   
-   fun{PutDict A Dict}
+declare A B C D E F G H I Z
+A = "truc much"|"ez"|nil
+B = "truc much"|"ez"|nil
+C = "truc much"|"tri"|nil
+D = "bla bla"|"bed"|nil
+E = "bla bla"|"zeg"|nil
+F = A|B|C|D|E|nil
+{Browse 1}
+proc{PutDict A Dicte}
+   local
+      Valu Dict1
+   in
       case A
       of Arg|Mot|nil then
-	 try 
-	    Dict1 = {Dict.get Arg}
-	    try
-	       Valu = {Dict1.get Mot}
-	       NewV = Valu + 1
-	       {Dict1.put Mot NewV}
-	    catch X then
-	       {Dict1.put Mot 1}
-	    end
-	 catch Y then
-	    Dict1 = {Dictionary.new}
-	    {Dict1.put Mot 1}
-	    {Dict.put Arg Dict1}
-	 end
-      else skip
-      end
-   end
-   fun{IterListDict N Dic}
-      case N
-      of A|T then
-	 {PutDict A Dict}
-	 {IterListDict T Dic}
-      [] nil then skip
+	 Dict1 = {Dictionary.condGet Dicte {String.toAtom Arg} {Dictionary.new}}
+	 Valu = {Dictionary.condGet Dict1 {String.toAtom Mot} 0}
+	 {Dictionary.put Dict1 {String.toAtom Mot} Valu+1}
+	 {Dictionary.put Dicte {String.toAtom Arg} Dict1}
       else skip end
    end
-   
 end
+proc{IterListDict N Dic}
+   case N
+   of A|T then
+      {PutDict A Dic}
+      {IterListDict T Dic}
+   [] nil then skip
+   else skip end
+end
+
+fun{FindMax Dicte}
+   local A
+      fun{Itermax A Dicte B U}
+	 local C in
+	    case A of D|T then
+	       C = {Dictionary.get Dicte D}
+	       if C > U then {Itermax T Dicte D C}
+	       else {Itermax T Dicte B U} end
+	    [] nil then B end
+	 end
+      end
+   in
+      A = {Dictionary.keys Dicte}
+      {Itermax A Dicte {String.toAtom "init"} 0}
+   end
+end
+
+fun{FilterAll Dictu}
+   local B A
+      proc{Iterfilter A Dicte Dicts}
+	 local C in
+	    case A of D|T then
+	       C = {Dictionary.get Dicte D}
+	       {Dictionary.put Dicts D {FindMax C}}
+	       {Iterfilter T Dicte Dicts}
+	    []nil then skip end
+	 end
+      end
+   in
+      B = {Dictionary.keys Dictu}
+      {Browse B}
+      A = {Dictionary.new}
+      {Iterfilter B Dictu A}
+      A
+   end
+end
+{IterListDict F G}
+H = {FilterAll G}
+{Browse {Dictionary.keys H}}
+{Browse {Dictionary.get H {String.toAtom "truc much"}}}
+
+class Dico2
+   attr i
+   meth init
+      i := {Dictionary.new}
+   end
+   meth iterListDict(N)
+      local
+         proc{PutDict A Dicte}
+	    local
+	       Valu Dict1 K
+	    in
+	       case A
+	       of Arg|Mot|nil then
+		  K = {Dictionary.new}
+	          Dict1 = {Dictionary.condGet Dicte {String.toAtom Arg} K}
+		  Valu = {Dictionary.condGet Dict1 {String.toAtom Mot} 0}
+		  {Dictionary.put Dict1 {String.toAtom Mot} Valu+1}
+		  {Dictionary.put Dicte {String.toAtom Arg} Dict1}
+	       else skip end
+	    end
+	 end
+      in
+         case N
+         of A|T then
+	    {PutDict A @i}
+	    {IterListDict T @i}
+         [] nil then skip
+	 else skip end
+      end
+   end
+   meth filterAll(A) 
+      local
+         B 
+	 proc{Iterfilter A Dicte Dicts}
+	    local 
+	       C
+	       fun{FindMax Dicte}
+		  local 
+		     A
+		     fun{Itermax A Dicte B U}
+		        local 
+			   C 
+			in
+			   case A of D|T then
+			      C = {Dictionary.get Dicte D}
+			      if C > U then {Itermax T Dicte D C}
+			      else {Itermax T Dicte B U} end
+			   [] nil then B end
+			end
+		     end
+		  in
+		     A = {Dictionary.keys Dicte}
+		     {Itermax A Dicte {String.toAtom "init"} 0}
+		  end
+	       end
+	    in
+	       case A of D|T then
+	          C = {Dictionary.get Dicte D}
+		  {Dictionary.put Dicts D {FindMax C}}
+		  {Iterfilter T Dicte Dicts}
+	       []nil then skip end
+	    end
+	 end
+      in
+         B = {Dictionary.keys @i}
+	 {Browse B}
+	 A = {Dictionary.new}
+	 {Iterfilter B @i A}
+      end
+   end
+   meth get(LI X)
+      {Dictionary.get @i {String.toAtom LI} X}
+   end
+   meth add1(LI B)
+      {Dictionary.put @i  LI B}
+   end
+end
+{Browse 2}
+G = {New Dico2 init}
+%{G iterListDict(F I)}
+%{G filterAll(H)}
+{G add1("trucmuch" 1)}
+{G get("trucmuch" Z)}
+{Browse Z}
+{Browse 3}
 
 
 	    
