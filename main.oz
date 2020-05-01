@@ -25,6 +25,7 @@ define
         lr(
             text(handle:Text1 width:28 height:5 background:white foreground:black wrap:word)
             button(text:"Change" action:Press)
+			button(text:"Add 1" action:AddTest)
         )
         text(handle:Text2 width:28 height:5 background:black foreground:white glue:w wrap:word)
         action:proc{$}{Application.exit 0} end % quit app gracefully on window closing
@@ -32,6 +33,11 @@ define
     proc {Press} Inserted in
         Inserted = {Text1 getText(p(1 0) 'end' $)} % example using coordinates to get text
         {Text2 set(1:Inserted)} % you can get/set text this way too
+    end
+	
+	proc {AddTest} Inserted in
+        Inserted = {Text1 getText(p(1 0) 'end' $)} % example using coordinates to get text
+        {Text1 set(1:{Append Inserted " and again"})} % you can get/set text this way too
     end
     % Build the layout from the description
     W={QTk.build Description}

@@ -42,6 +42,7 @@ proc {FullAdd Input Output}
    case Input
    of A|B then ({Output add(A)} {FullAdd B Output})
    [] A|nil then {Output add(A)}
+   else skip
    end
 end
 thread {FullAdd E G} end
@@ -50,6 +51,50 @@ local X in
    {G get(X)}
    {Browse X}
 end
+
+declare A B C
+A = "Test"
+B = " 1"
+C = {Append A B}
+{Browse C}
+
+
+declare A B C
+class Dico
+   attr i
+   meth init
+      i := {Dictionary.new}
+   end
+   meth add(LI)
+      X Y
+   in
+      {Dictionary.condGet +@i +LI 0 X}
+      Y = X +1
+      {Dictionary.put +@i +LI Y}
+   end
+   meth get(LI X)
+      {Dictionary.get +@i +LI X}
+   end
+end
+A = {New Dico init}
+{A init}
+{A add("test")}
+{A add("test")}
+{A add("hello")}
+{A get("test" B)}
+{A get("hello" C)}
+{Browse B}
+{Browse C}
+
+declare A B C
+{Dictionary.new A}
+{
+
+
+      
+      
+   
+      
 
 
       
