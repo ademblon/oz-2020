@@ -11,12 +11,13 @@ define
 %%% Easier macros for imported functions
     Browse = Browser.browse
     Show = System.show
+	NumThread = 2
 
 %%% Read File
     fun {GetFirstLine IN_NAME}
         {Reader.scan {New Reader.textfile init(name:IN_NAME)} 1}
     end
-
+	
 %%% GUI
     % Make the window description, all the parameters are explained here:
     % http://mozart2.org/mozart-v1/doc-1.4.0/mozart-stdlib/wp/qtk/html/node7.html)
