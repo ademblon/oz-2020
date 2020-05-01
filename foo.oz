@@ -68,12 +68,12 @@ class Dico
    meth add(LI)
       X Y
    in
-      {Dictionary.condGet +@i +LI 0 X}
+      {Dictionary.condGet @i {String.toAtom LI} 0 X}
       Y = X +1
-      {Dictionary.put +@i +LI Y}
+      {Dictionary.put @i {String.toAtom LI} Y}
    end
    meth get(LI X)
-      {Dictionary.get +@i +LI X}
+      {Dictionary.get @i {String.toAtom LI} X}
    end
 end
 A = {New Dico init}
@@ -86,9 +86,13 @@ A = {New Dico init}
 {Browse B}
 {Browse C}
 
-declare A B C
+declare A B C D
 {Dictionary.new A}
-{
+D = "test"
+C = {String.toAtom D}
+{Dictionary.put A C 1}
+{Dictionary.get A C B}
+{Browse B}
 
 
       
