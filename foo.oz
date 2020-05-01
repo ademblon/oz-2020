@@ -123,6 +123,7 @@ end
 A = "AAA. BBB;? C,CC D??DD "
 {Split A B}
 {Browse  B}
+
 declare A B C D E F G H I
 A = "truc much"|"ez"|nil
 B = "truc much"|"ez"|nil
