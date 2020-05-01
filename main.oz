@@ -11,13 +11,17 @@ define
 %%% Easier macros for imported functions
     Browse = Browser.browse
     Show = System.show
-	NumThread = 2
 
 %%% Read File
-    fun {GetFirstLine IN_NAME}
-        {Reader.scan {New Reader.textfile init(name:IN_NAME)} 1}
+    fun {AddWord Text}
+       " again"
     end
-	
+
+    proc {LoadFiles}
+		{Reader.startthreads} %%%Load Files
+		{Text2 set(1:"Files Loaded")}
+    end
+    
 %%% GUI
     % Make the window description, all the parameters are explained here:
     % http://mozart2.org/mozart-v1/doc-1.4.0/mozart-stdlib/wp/qtk/html/node7.html)
@@ -25,27 +29,23 @@ define
         title: "Frequency count"
         lr(
             text(handle:Text1 width:28 height:5 background:white foreground:black wrap:word)
-            button(text:"Change" action:Press)
-			button(text:"Add 1" action:AddTest)
+	   button(text:"Load Files" action:LoadFiles)
+	   button(text:"Add 1" action:AddTest)
         )
         text(handle:Text2 width:28 height:5 background:black foreground:white glue:w wrap:word)
         action:proc{$}{Application.exit 0} end % quit app gracefully on window closing
     )
-    proc {Press} Inserted in
-        Inserted = {Text1 getText(p(1 0) 'end' $)} % example using coordinates to get text
-        {Text2 set(1:Inserted)} % you can get/set text this way too
-    end
-	
-	proc {AddTest} Inserted in
-        Inserted = {Text1 getText(p(1 0) 'end' $)} % example using coordinates to get text
-        {Text1 set(1:{Append Inserted " and again"})} % you can get/set text this way too
+   	
+    proc {AddTest} Inserted NewWord in
+       Inserted = {Text1 getText(p(1 0) 'end' $)}
+       NewWord = {AddWord Inserted}
+       {Text1 set(1:{Append Inserted NewWord})} % you can get/set text this way too
     end
     % Build the layout from the description
     W={QTk.build Description}
     {W show}
 
-    {Text1 tk(insert 'end' {GetFirstLine "tweets/part_1.txt"})}
-    {Text1 bind(event:"<Control-s>" action:Press)} % You can also bind events
+    %{Text1 tk(insert 'end' {GetFirstLine "tweets/part_1.txt"})}
 
     {Show 'You can print in the terminal...'}
     {Browse '... or use the browser window'}
