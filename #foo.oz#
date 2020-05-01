@@ -94,16 +94,27 @@ D = test
 {Dictionary.get A D B}
 {Browse B}
 
-{Browse {Append (1|2|nil) (3|4|nil)}}
 
 declare A B C
-A = "AAA BBB CCC DDD "
-proc{Test Str Z}
+fun{Filt Str}
+   local X in
+      X = {NewCell ""}
+      for Lettre in Str do
+	 local Ch in
+	    Ch = {Char.toLower Lettre}
+	    if Ch>=97 then X := {Append @X Ch|nil}
+	    elseif Ch == 32 then X := {Append @X Ch|nil}
+	    else skip end
+	 end
+      end
+      @X
+   end
+end
+proc{Split Str Z}
    local X Y in
       X = {NewCell ""}
       Y = {NewCell nil}
-      for Lettre in Str do
-	 {Browse Lettre}
+      for Lettre in {Filt Str} do
 	 if Lettre == 32 then
 	    Y := {Append @Y (@X)|nil}
 	    X := ""
@@ -114,12 +125,10 @@ proc{Test Str Z}
       Z = @Y
    end
 end
-{Test A B}
-{Browse B}
+A = "AAA. BBB;? C,CC D??DD "
+{Split A B}
+{Browse  B}
 
-
-
-   
 
    
 
