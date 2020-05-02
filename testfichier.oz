@@ -19,14 +19,7 @@ proc{PutDict A Dicte}
       else skip end
    end
 end
-proc{IterListDict N Dic}
-   case N
-   of A|T then
-      {PutDict A Dic}
-      {IterListDict T Dic}
-   [] nil then skip
-   else skip end
-end
+
 
 fun{FindMax Dicte}
    local A
@@ -86,6 +79,14 @@ class Dico2
 		  {Dictionary.put Dicte {String.toAtom Arg} Dict1}
 	       else skip end
 	    end
+	 end
+	 proc{IterListDict N Dic}
+	    case N
+	    of A|T then
+	       {PutDict A Dic}
+	       {IterListDict T Dic}
+	    [] nil then skip
+	    else skip end
 	 end
       in
          case N
