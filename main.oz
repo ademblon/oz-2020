@@ -5,8 +5,8 @@ import
     Application
     OS
     Browser
-
     Reader
+	
 define
 %%% Easier macros for imported functions
     Browse = Browser.browse
@@ -31,18 +31,30 @@ define
 	end
 	
     fun {AddWord Text}
-       local TwoWords in
+       local TwoWords X in
 			TwoWords = {TwoLastWord Text}
-			%{FilteredDico get(TwoWords)}
-			"BUG"
+			X = {Reader.split Text}
+			{Browse Text}
+			{Browse TwoWords}
+			%{Dictionary.get @FilteredDico {String.toAtom "you are"}}
 		end
     end
 
     proc {LoadFiles}
 		{Reader.startthreads Dico} %%%Load Files
-		FilteredDico := {Dico filterAll}
 		{Text2 set(1:"Files Loaded")}
     end
+	
+	proc{LoadDico}
+		local X in
+			{Dico filterAll(X)}
+			FilteredDico := X
+			{Text2 set(1:"Dico Loaded")}
+		end
+	end
+	
+	
+		
 	
 	
 
@@ -57,6 +69,7 @@ define
             text(handle:Text1 width:28 height:5 background:white foreground:black wrap:word)
 	   button(text:"Load Files" action:LoadFiles)
 	   button(text:"Add 1" action:AddTest)
+	   button(text:"Load Dico" action:LoadDico)
         )
         text(handle:Text2 width:28 height:5 background:black foreground:white glue:w wrap:word)
         action:proc{$}{Application.exit 0} end % quit app gracefully on window closing

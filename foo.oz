@@ -20,7 +20,7 @@ fun{Last2W L}
    else nil
    end
 end 
-A = "aa"|"bb"|"cc"|"dd"|"ee"|nil
+A = 121|111|117|32|97|114|101|10|nil
 B = {Last2W A}
 {Browse B}
 
@@ -124,23 +124,25 @@ fun{Filt Str}
       @X
    end
 end
-proc{Split Str Z}
-   local X Y in
-      X = {NewCell ""}
-      Y = {NewCell nil}
-      for Lettre in {Filt Str} do
-	 if Lettre == 32 then
-	    Y := {Append @Y (@X)|nil}
-	    X := ""
-	 else
-	    X := {Append @X Lettre|nil}
-	 end
-      end
-      Z = @Y
-   end
+fun{Split Str}
+	local X Y in
+		X = {NewCell ""}
+		Y = {NewCell nil}
+		for Lettre in {Filt Str} do
+			if Lettre == 32 then
+				Y := {Append (@X)|nil @Y}
+				X := ""
+			else
+				X := {Append @X Lettre|nil}
+			end
+		end
+		Y := {Append (@X)|nil @Y}
+		{List.reverse @Y}	
+	end
 end
-A = "AAA. BBB;? C,CC D??DD "
-{Split A B}
+A = 121|111|117|32|97|114|101|10|nil
+B = {Split A}
+%{Browse {Filt A}}
 {Browse  B}
 
 declare A B C D E F G H I

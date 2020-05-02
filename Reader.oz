@@ -12,7 +12,7 @@ export
 
 define
 %-----------------FILE HANDELING-------------------
-	NThread = 2
+	NThread = 8
     % Process lines
     % @pre: - InFile: a TextFile from the file
     %     
@@ -26,7 +26,6 @@ define
 			{InFile close}
 		else
 			%%%handle Line
-			{Browser.browse {String.toAtom Line}}
 			ListWord = {Split Line}
 			GroupWord = {Group ListWord}
 			{Dico iterListDict(GroupWord)}
@@ -56,7 +55,7 @@ define
 			try
 			{GetAllLine Name Dico}
 			{ReadAllFiles Num+NThread Dico}
-			catch X then skip
+			catch X then {Browser.browse {String.toAtom {Cont "Thread finished : " {Int.toString (Num mod NThread)}}}}
 			end
 		end
 	end
@@ -103,13 +102,14 @@ define
 			Y = {NewCell nil}
 			for Lettre in {Filt Str} do
 				if Lettre == 32 then
-					Y := {Append @Y (@X)|nil}
+					Y := {Append (@X)|nil @Y}
 					X := ""
 				else
 					X := {Append @X Lettre|nil}
 				end
 			end
-			@Y
+			Y := {Append (@X)|nil @Y}
+			{List.reverse @Y}	
 		end
 	end
 	
