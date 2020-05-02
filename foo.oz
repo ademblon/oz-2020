@@ -13,8 +13,15 @@ fun{Tri L}
    else nil
    end
 end
+fun{Last2W L}
+   case L
+   of M|N|O|P then {Last2W (N|O|P)}
+   [] N|O|nil then {Cont N O}
+   else nil
+   end
+end 
 A = "aa"|"bb"|"cc"|"dd"|"ee"|nil
-B = {Tri A}
+B = {Last2W A}
 {Browse B}
 
 

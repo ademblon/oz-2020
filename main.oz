@@ -14,14 +14,33 @@ define
 	
 %%%Dico
 	Dico = {Reader.newactive Reader.dico2 init}
+	FilteredDico = {NewCell Dico}
 
 %%% Read File
+
+	fun{Last2W L}
+		case L
+		of M|N|O|P then {Last2W (N|O|P)}
+		[] N|O|nil then {Reader.cont N O}
+		else nil
+		end
+	end
+	
+	fun {TwoLastWord Text}
+		{Last2W {Reader.split Text}}
+	end
+	
     fun {AddWord Text}
-       " again"
+       local TwoWords in
+			TwoWords = {TwoLastWord Text}
+			%{FilteredDico get(TwoWords)}
+			"BUG"
+		end
     end
 
     proc {LoadFiles}
 		{Reader.startthreads Dico} %%%Load Files
+		FilteredDico := {Dico filterAll}
 		{Text2 set(1:"Files Loaded")}
     end
 	
