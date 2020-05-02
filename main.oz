@@ -11,6 +11,9 @@ define
 %%% Easier macros for imported functions
     Browse = Browser.browse
     Show = System.show
+	
+%%%Dico
+	Dico = {Reader.newactive Reader.dico2 init}
 
 %%% Read File
     fun {AddWord Text}
@@ -18,9 +21,13 @@ define
     end
 
     proc {LoadFiles}
-		{Reader.startthreads} %%%Load Files
+		{Reader.startthreads Dico} %%%Load Files
 		{Text2 set(1:"Files Loaded")}
     end
+	
+	
+
+
     
 %%% GUI
     % Make the window description, all the parameters are explained here:
