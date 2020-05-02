@@ -32,7 +32,7 @@ define
 	
     fun {AddWord Text}
        local TwoWords X in
-			TwoWords = {TwoLastWord Text}
+			TwoWords = {TwoLastWord {Reader.filt Text}}
 			{Dictionary.get @FilteredDico {String.toAtom TwoWords}}
 		end
     end
