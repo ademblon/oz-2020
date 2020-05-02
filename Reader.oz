@@ -16,6 +16,7 @@ define
 	proc {Scan2 InFile}
 		Line={InFile getS($)}
 		ListWord
+		GroupWord
 	in
 		if Line==false then
 			{InFile close}
@@ -23,6 +24,7 @@ define
 			%%%handle Line
 			{Browser.browse {String.toAtom Line}}
 			ListWord = {Split Line}
+			GroupWord = {Group ListWord}
 			{Scan2 InFile}
 		end
 	end
@@ -89,6 +91,7 @@ define
 		end
 	end
 	
+	%Cree une liste de mot a partir d'un string
 	fun{Split Str}
 		local X Y in
 			X = {NewCell ""}
@@ -102,6 +105,23 @@ define
 				end
 			end
 			@Y
+		end
+	end
+	
+	fun{Cont StrA StrB}
+		local A B in
+			A = {Append StrA " "}
+			B = {Append A StrB}
+			B
+		end
+	end
+	
+	%prend une liste et les regroupes
+	fun{Group L}
+		case L
+		of M|N|O|P then ({Cont M N}|O|nil)|{Group (N|O|P)}
+		[] M|N|O|nil then ({Cont M N}|O|nil)|nil
+		else nil
 		end
 	end
 	

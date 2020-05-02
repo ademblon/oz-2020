@@ -1,14 +1,23 @@
 declare A B C
+fun{Cont StrA StrB}
+   local A B in
+      A = {Append StrA " "}
+      B = {Append A StrB}
+      B
+   end
+end	   
 fun{Tri L}
    case L
-   of M|N|O|P then (M|N|O|nil)|{Tri (N|O|P)}
-   [] M|N|O|nil then (M|N|O|nil)
+   of M|N|O|P then ({Cont M N}|O|nil)|{Tri (N|O|P)}
+   [] M|N|O|nil then ({Cont M N}|O|nil)|nil
    else nil
    end
 end
-%A = 1|2|3|4|5
-%B = {Tri A}
-%{Browse B}
+A = "aa"|"bb"|"cc"|"dd"|"ee"|nil
+B = {Tri A}
+{Browse B}
+
+
 
 
 
