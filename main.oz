@@ -33,10 +33,7 @@ define
     fun {AddWord Text}
        local TwoWords X in
 			TwoWords = {TwoLastWord Text}
-			X = {Reader.split Text}
-			{Browse Text}
-			{Browse TwoWords}
-			%{Dictionary.get @FilteredDico {String.toAtom "you are"}}
+			{Dictionary.get @FilteredDico {String.toAtom TwoWords}}
 		end
     end
 
@@ -53,8 +50,14 @@ define
 		end
 	end
 	
-	
-		
+	fun{Conca StrA StrB}
+		local A B C in
+			A = {Append {Reader.filt StrA} " "}
+			B = {Append A {AtomToString StrB}}
+			C = {Append B 10|nil}
+			C
+		end
+	end
 	
 	
 
@@ -78,7 +81,13 @@ define
     proc {AddTest} Inserted NewWord in
        Inserted = {Text1 getText(p(1 0) 'end' $)}
        NewWord = {AddWord Inserted}
-       {Text1 set(1:{Append Inserted NewWord})} % you can get/set text this way too
+	   {Browse Inserted}
+	   {Browse {Reader.filt Inserted}}
+	   {Browse NewWord}
+	   {Browse {AtomToString NewWord}}
+	   {Browse {Conca Inserted NewWord}}
+       {Text1 set(1:"")} % you can get/set text this way too
+	   {Text1 tk(insert 'end' {Conca Inserted NewWord})}
     end
     % Build the layout from the description
     W={QTk.build Description}

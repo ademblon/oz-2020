@@ -9,6 +9,7 @@ export
 	newactive:NewActive
 	split:Split
 	cont:Cont
+	filt:Filt
 
 define
 %-----------------FILE HANDELING-------------------
@@ -96,7 +97,7 @@ define
 	end
 	
 	%Cree une liste de mot a partir d'un string
-	fun{Split Str}
+	fun {Split Str}
 		local X Y in
 			X = {NewCell ""}
 			Y = {NewCell nil}
