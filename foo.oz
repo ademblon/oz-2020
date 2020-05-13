@@ -21,7 +21,7 @@ fun{Last2W L}
    end
 end 
 A = 121|111|117|32|97|114|101|10|nil
-B = {Last2W A}
+B = {Tri A}
 {Browse B}
 
 
@@ -124,26 +124,45 @@ fun{Filt Str}
       @X
    end
 end
-fun{Split Str}
+fun {Split Str}
 	local X Y in
 		X = {NewCell ""}
 		Y = {NewCell nil}
-		for Lettre in {Filt Str} do
-			if Lettre == 32 then
+		for Lettre in Str do 
+			if {And Lettre == 32 @X \= nil} then
 				Y := {Append (@X)|nil @Y}
 				X := ""
 			else
-				X := {Append @X Lettre|nil}
+				local Ch={Char.toLower Lettre} in 
+					if {And Ch>=97 122>=Ch} then X := {Append @X Ch|nil} else skip end
+				end
 			end
 		end
 		Y := {Append (@X)|nil @Y}
-		{List.reverse @Y}	
+		{List.reverse @Y} %make it way faster
 	end
 end
-A = 121|111|117|32|97|114|101|10|nil
+fun{Cont StrA StrB}
+   local A B in
+      A = {Append StrA " "}
+      B = {Append A StrB}
+      B
+   end
+end	   
+fun{Tri L}
+   case L
+   of M|N|O|P then ({Cont M N}|O|nil)|{Tri (N|O|P)}
+   %[] M|N|O|nil then ({Cont M N}|O|nil)|nil
+   else nil
+   end
+end
+A = 121|111|117|32|97|114|101|32|32|115|10|nil
 B = {Split A}
+{Browse B}
+C = {Tri B}
+%{Browse C}
 %{Browse {Filt A}}
-{Browse  B}
+%{Browse {Cont "a" "b"}}
 
 declare A B C D E F G H I
 A = "truc much"|"ez"|nil

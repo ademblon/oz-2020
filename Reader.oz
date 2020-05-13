@@ -14,24 +14,21 @@ export
 define
 %-----------------FILE HANDELING-------------------
 	NThread = 8
+	NBFiles = 208
     % Process lines
     % @pre: - InFile: a TextFile from the file
     %     
     % @post: Process every line of the file
 	proc {Scan2 InFile Dico}
-		Line={InFile getS($)}
+		Lines
 		ListWord
 		GroupWord
 	in
-		if Line==false then
-			{InFile close}
-		else
-			%%%handle Line
-			ListWord = {Split Line}
+		{InFile read(list:Lines size:all)}
+			ListWord = {Split Lines}
 			GroupWord = {Group ListWord}
 			{Dico iterListDict(GroupWord)}
-			{Scan2 InFile Dico}
-		end
+		{InFile close}
 	end
 	
 	fun {CreateName Num}
@@ -47,25 +44,26 @@ define
     end
 	
 	proc {GetAllLine NAME Dico}
-		{Scan2 {New TextFile init(name:NAME)} Dico}
+		{Scan2 {New Open.file init(name:NAME)} Dico}
 	end
 	
 	proc{ReadAllFiles Num Dico}
 		local Name in
-			Name = {CreateName Num}
-			try
-			{GetAllLine Name Dico}
-			{ReadAllFiles Num+NThread Dico}
-			catch X then {Browser.browse {String.toAtom {Cont "Thread finished : " {Int.toString (Num mod NThread)}}}}
+			if NBFiles >= Num then 
+			   Name = {CreateName Num} %{CreateName Num} "tweets/test.txt"
+			   {GetAllLine Name Dico}
+			   {ReadAllFiles Num+NThread Dico}
+			else
+			   {Browser.browse {String.toAtom {Cont "Thread finished : " {Int.toString (Num mod NThread)+1}}}}
 			end
 		end
 	end
 	
 	proc{StartThreads Dico}
 		for X in 1..NThread do
+			{Browser.browse {String.toAtom {Cont "Thread starting : " {Int.toString X}}}}
 			thread{ReadAllFiles X Dico}end
 		end
-
 	end
 	
 %--------------- LINE PROCESSING ----------------------------------------------
@@ -85,11 +83,17 @@ define
 		local X in
 			X = {NewCell ""}
 			for Lettre in Str do
-				local Ch in
-					Ch = {Char.toLower Lettre}
-					if Ch>=97 then X := {Append @X Ch|nil}
-					elseif Ch == 32 then X := {Append @X Ch|nil}
-					else skip end
+				try 
+					local Ch in
+						Ch = {Char.toLower Lettre}
+						if {And Ch>=97 122>=Ch} then X := {Append @X Ch|nil}
+						elseif Ch == 32 then X := {Append @X Ch|nil}
+						else skip end
+					end
+				catch Y then
+					skip
+					{Browser.browse Lettre}
+					%{Browser.browse Y}
 				end
 			end
 			@X
@@ -101,16 +105,18 @@ define
 		local X Y in
 			X = {NewCell ""}
 			Y = {NewCell nil}
-			for Lettre in {Filt Str} do
-				if Lettre == 32 then
+			for Lettre in Str do 
+				if {And Lettre == 32 @X \= nil} then
 					Y := {Append (@X)|nil @Y}
 					X := ""
 				else
-					X := {Append @X Lettre|nil}
+					local Ch={Char.toLower Lettre} in 
+						if {And Ch>=97 122>=Ch} then X := {Append @X Ch|nil} else skip end
+					end
 				end
 			end
 			Y := {Append (@X)|nil @Y}
-			{List.reverse @Y}	
+			{List.reverse @Y} %make it way faster
 		end
 	end
 	
@@ -126,7 +132,6 @@ define
 	fun{Group L}
 		case L
 		of M|N|O|P then ({Cont M N}|O|nil)|{Group (N|O|P)}
-		[] M|N|O|nil then ({Cont M N}|O|nil)|nil
 		else nil
 		end
 	end

@@ -33,7 +33,7 @@ define
     fun {AddWord Text}
        local TwoWords X in
 			TwoWords = {TwoLastWord {Reader.filt Text}}
-			{Dictionary.get @FilteredDico {String.toAtom TwoWords}}
+			{Dictionary.condGet @FilteredDico {String.toAtom TwoWords} {String.toAtom "Key not found"}}
 		end
     end
 
@@ -81,11 +81,11 @@ define
     proc {AddTest} Inserted NewWord in
        Inserted = {Text1 getText(p(1 0) 'end' $)}
        NewWord = {AddWord Inserted}
-	   {Browse Inserted}
-	   {Browse {Reader.filt Inserted}}
-	   {Browse NewWord}
+	   %{Browse Inserted}
+	   %{Browse {Reader.filt Inserted}}
+	   %{Browse NewWord}
 	   {Browse {AtomToString NewWord}}
-	   {Browse {Conca Inserted NewWord}}
+	   %{Browse {Conca Inserted NewWord}}
        {Text1 set(1:"")} % you can get/set text this way too
 	   {Text1 tk(insert 'end' {Conca Inserted NewWord})}
     end
