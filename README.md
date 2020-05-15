@@ -1,4 +1,4 @@
-Projet oz 2020 par Gauthier Rubbers et Antoine Demblon 
+Groupe AO; Projet oz 2020 par Gauthier Rubbers et Antoine Demblon 
 Dans le cadre du cour d'oz, il nous a été demandé de concevoir un programme qui, si on lui donne deux mots en entrée, renvoie une suggestion de 3eme mot.
 Notre programme est décomposé en deux fichiers:
 
@@ -11,4 +11,3 @@ Notre programme est décomposé en deux fichiers:
 
 -Main.oz: il contient le code de l'interface, ainsi que quelques fonctions liées aux Thread et non définie dans file handeling.
 
-Notre structure de thread est identique à celle proposée dans l'énoncé, c'est
