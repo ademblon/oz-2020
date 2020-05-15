@@ -3,7 +3,6 @@ import
     Open
 	Browser
 export
-    textfile:TextFile
 	startthreads:StartThreads
 	dico2:Dico2
 	newactive:NewActive
@@ -31,6 +30,7 @@ define
 			{Dico iterListDict(GroupWord)}
 		{InFile close}
 	end
+	
 	% @pre: - Num: un numero correspondant à un fichier text
     %     
     % @post: un String contenant le nom du fichier numero Num.
@@ -41,11 +41,6 @@ define
 			B
 		end
 	end
-
-    class TextFile % This class enables line-by-line reading
-        from Open.file Open.text
-    end
-	
 	
 	% @pre: - Name, Dico: le nom d'un fichier text, et une instance d'un Dico2 dans un objet actif
     %     
@@ -61,7 +56,7 @@ define
 	proc{ReadAllFiles Num Dico}
 		local Name in
 			if NBFiles >= Num then 
-			   Name = {CreateName Num} %{CreateName Num} "tweets/test.txt"
+			   Name = {CreateName Num} 
 			   {GetAllLine Name Dico}
 			   {ReadAllFiles Num+NThread Dico}
 			else
@@ -100,17 +95,11 @@ define
 		local X in
 			X = {NewCell ""}
 			for Lettre in Str do
-				try 
-					local Ch in
-						Ch = {Char.toLower Lettre}
-						if {And Ch>=97 122>=Ch} then X := {Append @X Ch|nil}
-						elseif Ch == 32 then X := {Append @X Ch|nil}
-						else skip end
-					end
-				catch Y then
-					skip
-					{Browser.browse Lettre}
-					%{Browser.browse Y}
+				local Ch in
+					Ch = {Char.toLower Lettre}
+					if {And Ch>=97 122>=Ch} then X := {Append @X Ch|nil}
+					elseif Ch == 32 then X := {Append @X Ch|nil}
+					else skip end
 				end
 			end
 			@X
@@ -138,6 +127,7 @@ define
 			{List.reverse @Y} %make it way faster
 		end
 	end
+	
 	% @pre: - StrA, StrB: deux mots sous forme de string.
     %     
     % @post: un String, qui est le résultat de la fusion des deux entrées, avec un espace entre 
